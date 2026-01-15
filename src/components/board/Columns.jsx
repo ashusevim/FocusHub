@@ -4,16 +4,16 @@ import TaskCard from "./TaskCard";
 // tasks: An array of task objects belongs to this column
 function Columns({ title, tasks }) {
 	return (
-		<div className="space-y-2">
+		<div className="space-y-2 border-2 rounded-3xl flex flex-col p-10">
 			
-            <div>
-                <h2>{title}</h2>
-			    <span>({tasks.length})</span>
+            <div className="">
+                <h2 className="font-bold">{title}</h2>
+			    <span>Tasks: {tasks.length}</span>
             </div>
 			{/* list of tasks */}
 			{tasks.map((task) => (
 				<div key={task.id}>
-					<TaskCard key={task.id} task={task} />
+					<TaskCard key={task.id} task={task}/>
 				</div>
 			))}
 		</div>
