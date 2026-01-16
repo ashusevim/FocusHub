@@ -1,19 +1,27 @@
-import { createRoot } from "react-dom/client";
+import React from "react";
+import ReactDOM from "react-dom/client"
 import "./index.css";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import App from "./App.jsx"
 import Dashboard from "../src/pages/Dashboard.jsx";
 import BoardPage from "../src/pages/BoardPage.jsx";
 import Settings from "../src/pages/Settings.jsx";
 
-createRoot(document.getElementById("root")).render(
-	<BrowserRouter>
-		<Routes>
-			<Route path="/" element={<App />}/>
-			<Route path="/dashboard" element={<Dashboard />} />
-			<Route path="/board" element={<BoardPage />} />
-			<Route path="/settings" element={<Settings />} />
-			<Route path="*" element={ <Error/>} />
-		</Routes>
-	</BrowserRouter>,
+const router = createBrowserRouter([
+    {
+        path: "/",
+        element: <App />,
+        children: [
+            { path: "dashboard", element: <Dashboard /> },
+            { path: "board", element: <BoardPage /> },
+            { path: "settings", element: <Settings /> },
+            { index: true, element: <BoardPage/> } // default route
+        ]
+    }
+])
+
+ReactDOM.createRoot(document.getElementById("root")).render(
+    <React.StrictMode>
+        <RouterProvider router={router} />
+    </React.StrictMode>
 );
