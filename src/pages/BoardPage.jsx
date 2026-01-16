@@ -4,7 +4,7 @@ import boardReducer from "../reducers/boardReducer"
 import Columns from "@/components/board/Columns";
 
 export default function BoardPage() {
-    const [boardState, dispatch] = useReducer(boardState, initialBoardState)
+    const [boardState, dispatch] = useReducer(boardReducer, initialBoardState)
 
     return (
         <div className="flex flex-1 space-x-2">
