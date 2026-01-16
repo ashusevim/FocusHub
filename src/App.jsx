@@ -10,19 +10,19 @@ const initialState = {
     columns: {
         "todo": { id: "todo", title: "To Do", taskIds: [1, 2] },
         "inprogress": { id: "inprogress", title: "In Progress", taskIds: [3] },
-        "done": { id: "done", title: "Done", taskIds }
+        "done": { id: "done", title: "Done", taskIds: [] }
     },
     tasks: {
         1: { id: 1, title: "Building kanban board", tags: ["Building", "Kanban"] },
         2: { id: 2, title: "Learn Docker", tags: ["Docker", "Learning", "containerization"] },
-        3: { id: 1, title: "Preparing for exam", tags: ["Exam"] },
-        4: { id: 1, title: "Apply for an internship", tags: ["Internship"] }
+        3: { id: 3, title: "Preparing for exam", tags: ["Exam"] },
+        4: { id: 4, title: "Apply for an internship", tags: ["Internship"] }
     }
 }
 
-
 function App() {
     const [boardState, dispatch] = useReducer(boardReducer, initialState);
+
     return (
         <>
             <NavBar />
@@ -32,9 +32,19 @@ function App() {
                     <SideBar />
                 </div>
                 <div className="flex flex-1 space-x-2">
-                    <Columns title={"To do"} tasks={todo} />
-                    <Columns title={"In Progress"} tasks={inprogress} />
-                    <Columns title={"Done"} tasks={done} />
+                    {Object.values(boardState.columns).map((col) => {
+                        // [1, 2] => [{id:1...}, {id:2...}]
+                        // maps IDs to real task objects
+                        const columnTasks = col.taskIds.map((taskId) => boardState.tasks[taskId]);
+                        
+                        return (
+                            <Columns
+                                key={col.id}
+                                title={col.title}
+                                tasks={columnTasks}
+                            />
+                        );
+                    })}
                 </div>
             </div>
         </>
