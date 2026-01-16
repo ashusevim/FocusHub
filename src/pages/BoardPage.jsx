@@ -1,10 +1,8 @@
-import initialBoardState from "@/state/InitialBoardState";
-import { useReducer } from "react";
-import boardReducer from "../reducers/boardReducer"
 import Columns from "@/components/board/Columns";
+import { useBoard } from "@/context/BoardContext";
 
 export default function BoardPage() {
-    const [boardState, dispatch] = useReducer(boardReducer, initialBoardState)
+    const [boardState, dispatch] = useBoard();
 
     return (
         <div className="flex flex-1 space-x-2">
