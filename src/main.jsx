@@ -1,10 +1,10 @@
 import { createRoot } from "react-dom/client";
 import "./index.css";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import App from "./App.jsx";
-import Dashboard from "../pages/Dashboard.jsx";
-import BoardPage from "../pages/BoardPage.jsx";
-import Settings from "../pages/Settings.jsx";
+import App from "./App.jsx"
+import Dashboard from "../src/pages/Dashboard.jsx";
+import BoardPage from "../src/pages/BoardPage.jsx";
+import Settings from "../src/pages/Settings.jsx";
 
 createRoot(document.getElementById("root")).render(
 	<BrowserRouter>

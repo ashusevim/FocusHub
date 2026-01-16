@@ -46,6 +46,16 @@ function App() {
                         );
                     })}
                 </div>
+
+                <button
+                    onClick={() => dispatch({
+                        type: 'MOVE_TASK',
+                        taskId: 2,
+                        sourceColumnId: "todo",
+                        targetColumnId: "done"
+                    })}>
+                    Move task 1
+                </button>
             </div>
         </>
     );

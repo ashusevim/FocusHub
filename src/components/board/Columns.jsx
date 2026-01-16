@@ -5,8 +5,7 @@ import TaskCard from "./TaskCard";
 function Columns({ title, tasks }) {
 	return (
 		<div className="space-y-2 border-2 rounded-3xl flex flex-col p-10">
-			
-            <div className="">
+            <div>
                 <h2 className="font-bold">{title}</h2>
 			    <span>Tasks: {tasks.length}</span>
             </div>

@@ -31,18 +31,25 @@ function boardReducer(state, action){
 
         case 'MOVE_TASK': {
             const { taskId, sourceColumnId, targetColumnId } = action;
-            // filter out from the source column and push to target column
+            
+            // 1. create new source taskIds (remove task)
+            const newSourceTaskIds = state.columns[sourceColumnId].taskIds.filter(id => id!==taskId);
+            
+            // 2. create new target taskIds (add task)
+            const newTargetTaskIds = [...state.columns[targetColumnId].taskIds, taskId]
+
             return {
                 ...state,
                 columns: {
                     ...state.columns,
+                    //update only two affected columns
                     [sourceColumnId]: {
                         ...state.columns[sourceColumnId],
-                        taskIds: state.columns[sourceColumnId].taskIds.filter(id=>id !== taskId)
+                        taskIds: newSourceTaskIds
                     },
                     [targetColumnId]: {
                         ...state.columns[targetColumnId],
-                        taskIds: [...state.columns[targetColumnId].taskIds,  taskId]
+                        taskIds: newTargetTaskIds
                     }
                 }
             }
@@ -69,6 +76,7 @@ function boardReducer(state, action){
                 }
             }
         }
+
         default:
             return state;
     }

@@ -7,7 +7,7 @@ function TaskCard({ task }) {
 				<div className="space-x-1.5 pt-2">
 					<span className=" rounded-4xl bg-black-100 px-3 py-1 text-sm font-medium text-blue-700">
 						{task.tags.map((tag)=>(
-                            <span className="space-x-1">{tag}</span>
+                            <span key={tag.id} className="space-x-1">{tag}</span>
                         ))}
 					</span>
 				</div>
