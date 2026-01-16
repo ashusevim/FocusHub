@@ -27,7 +27,7 @@ function App() {
         <>
             <NavBar />
             <Outlet />
-            <div className="flex flex-row space-x-1 p-1 h-screen">
+            <div className="flex flex-row space-x-1 p-1 h-[cals(100hv-5rem)]">
                 <div>
                     <SideBar />
                 </div>
