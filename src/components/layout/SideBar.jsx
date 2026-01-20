@@ -1,9 +1,7 @@
 import { NavLink, useNavigate } from "react-router-dom";
 import { PanelRightOpen, PanelRightClose, LayoutDashboard, KanbanSquare, Settings, Plus } from "lucide-react"
 import { useState } from "react";
-import { Link } from "react-router-dom";
 import { cn } from "@/lib/utils";
-import { Icon } from "lucide-react";
 
 function SideBar() {
     const [opened, setOpened] = useState(true);
@@ -42,7 +40,7 @@ function SideBar() {
                 <nav className="p-2 overflow-y-auto flex-1">
                     <ul className="space-y-2">
                         {navItems.map(({to, label, icon:Icon}) => (
-                            <li>
+                            <li key={to}>
                                 <NavLink
                                     to={to}
                                     title={!opened ? label : undefined}
@@ -60,7 +58,7 @@ function SideBar() {
                             </li>
                         ))}
 
-                        <li>
+                        <li className="pt-2">
                             <button
                                 type="button"
                                 title={!opened ? "Create new board" : undefined}

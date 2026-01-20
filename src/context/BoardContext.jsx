@@ -1,7 +1,7 @@
 import { createContext, useContext } from "react";
-import boardReducer from "@/reducers/boardReducer";
 import initialBoardState from "@/state/InitialBoardState";
 import { useReducer } from "react";
+import boardReducer from "@/reducers/boardReducer";
 
 // 1. create context
 // it like a channel to whom will get the data who subscribed to it
