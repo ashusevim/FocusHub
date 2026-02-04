@@ -19,12 +19,13 @@ function TaskCard({ task, columnId }) {
         }
     }
 
-    const handleDeleteTask = () => 
+    const handleDeleteTask = () => {
         dispatch({
             type: 'DELETE_TASK',
             taskId: task.id,
             columnId: columnId
         })
+    }
 
     return (
         <div className="border-2 rounded-xl p-5 space-y-3">

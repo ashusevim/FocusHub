@@ -9,7 +9,7 @@ export default function BoardPage() {
             {Object.values(boardState.columns).map((col) => {
                 // [1, 2] => [{id:1...}, {id:2...}]
                 // maps IDs to real task objects
-                const columnTasks = col.taskIds.map((taskId) => boardState.tasks[taskId]);
+                const columnTasks = col.taskIds.map((taskId)=>boardState.tasks[taskId]);
 
                 return (
                     <Columns key={col.id} columnId={col.id} title={col.title} tasks={columnTasks} />
