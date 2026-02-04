@@ -62,7 +62,7 @@ function SideBar() {
                             <button
                                 type="button"
                                 title={!opened ? "Create new board" : undefined}
-                                className="w-full flex items-center gap-3 px-3 py-2 rounded hover:bg-gray-800 transition-colors"
+                                className="w-full flex items-center gap-3 px-3 py-1 rounded hover:bg-gray-800 transition-colors"
                                 onClick={()=>{
                                     navigate('/board');
                                 }}
