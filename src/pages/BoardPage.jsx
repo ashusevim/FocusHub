@@ -12,19 +12,9 @@ export default function BoardPage() {
                 const columnTasks = col.taskIds.map((taskId) => boardState.tasks[taskId]);
 
                 return (
-                    <Columns key={col.id} title={col.title} tasks={columnTasks} />
+                    <Columns key={col.id} columnId={col.id} title={col.title} tasks={columnTasks} />
                 );
             })}
-
-            <button
-                onClick={() => dispatch({
-                    type: 'MOVE_TASK',
-                    taskId: 2,
-                    sourceColumnId: "todo",
-                    targetColumnId: "done"
-                })}>
-                Move task 1
-            </button>
         </div>
     )
 }

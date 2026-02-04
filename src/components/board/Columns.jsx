@@ -2,7 +2,7 @@ import TaskCard from "./TaskCard";
 
 // title: name of the column (e.g., "To Do", "Done")
 // tasks: An array of task objects belongs to this column
-function Columns({ title, tasks }) {
+function Columns({ title, tasks, columnId }) {
 	return (
 		<div className="space-y-2 border-2 rounded-3xl flex flex-col p-10">
             <div>
@@ -12,7 +12,7 @@ function Columns({ title, tasks }) {
 			{/* list of tasks */}
 			{tasks.map((task) => (
 				<div key={task.id}>
-					<TaskCard key={task.id} task={task}/>
+					<TaskCard key={task.id} columnId={columnId} task={task}/>
 				</div>
 			))}
 		</div>
