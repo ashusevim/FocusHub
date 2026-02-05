@@ -67,7 +67,7 @@ function boardReducer(state, action){
                 ...state,
                 tasks: newTasks,
                 columns: {
-                    ...state.columns[columnId],
+                    ...state.columns,
                     [columnId]: {
                         ...state.columns[columnId],
                         // filter out the taskId from the column

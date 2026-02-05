@@ -1,5 +1,4 @@
 import { useBoard } from "@/context/BoardContext";
-import UiButton from "../UI/UiButton";
 
 import { Button } from "@/components/ui/button"
 import {
@@ -15,7 +14,7 @@ export default function TaskCard({ task, columnId }) {
     const { dispatch } = useBoard();
 
     const handleMoveTask = () => {
-        let targetColumnId = prompt("Enter a columnID (todo, inprogress, done):");
+        let targetColumnId = prompt("Enter a column (todo, inprogress, done):");
         if (targetColumnId) {
             dispatch({
                 type: 'MOVE_TASK',
@@ -40,12 +39,12 @@ export default function TaskCard({ task, columnId }) {
         <Card size="sm" className="mx-auto w-full max-w-sm">
             <CardHeader>
                 <CardTitle>{task.title}</CardTitle>
-                <CardDescription>
-                    {task.tags.map((tag, index) => {
+                <CardDescription className={"flex gap-1"}>
+                    {task.tags.map((tag, index) => (
                         <span
-                            key={index} className="border bg-amber-100"
-                        >{tag}</span>;
-                    })}
+                            key={index} className="border bg-amber-100 px-1 rounded text-xs"
+                        >{tag}</span>
+                    ))}
                 </CardDescription>
             </CardHeader>
             <CardContent>

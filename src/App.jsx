@@ -7,7 +7,7 @@ function App() {
     return (
         <>
             <NavBar />
-            <div className="flex flex-row space-x-1 p-1 h-[cals(100hv-5rem)]">
+            <div className="flex flex-row space-x-1 p-1 h-[calc(100hv-5rem)]">
                 <SideBar />
                 <main className="flex-1 p-2 overflow-auto">
                     <Outlet />

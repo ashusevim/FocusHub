@@ -1,4 +1,4 @@
-import { createContext, useContext } from "react";
+import { createContext, useContext, useEffect } from "react";
 import initialBoardState from "@/state/InitialBoardState";
 import { useReducer } from "react";
 import boardReducer from "@/reducers/boardReducer";
@@ -8,9 +8,25 @@ import boardReducer from "@/reducers/boardReducer";
 // it is empty by default
 const BoardContext = createContext()
 
-// 2. create provider component
+// load from the localStorage or fall back to the initialBoardState
+const loadState = () => {
+    try{
+        const localData = localStorage.getItem("boardState");
+        return localData ? JSON.parse(localData) : initialBoardState;
+    }   
+    catch{
+        return initialBoardState;
+    }
+}
+
 export function BoardProvider({ children }) {
-    const [boardState, dispatch] = useReducer(boardReducer, initialBoardState);
+    // our initialization function does not require external input to calculate the starting state
+    const [boardState, dispatch] = useReducer(boardReducer, undefined, loadState);
+
+    // Side-Effect: save to localStorage whenever board state changes
+    useEffect(() => {
+        localStorage.setItem("boardState", JSON.stringify(boardState));
+    }, [boardState])
 
     // Any child can access boardState or call dispatch
     return (

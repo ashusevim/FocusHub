@@ -39,7 +39,7 @@ const buttonVariants = cva(
 )
 
 function Button({
-  className = "cursor-pointer",
+  className,
   variant = "default",
   size = "default",
   asChild = false,
