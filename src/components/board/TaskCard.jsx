@@ -54,19 +54,17 @@ export default function TaskCard({ task, columnId }) {
                     &quot;sm&quot; for a more compact appearance.
                 </p>
             </CardContent>
-            <CardFooter>
+            <CardFooter className={"gap-2"}>
                 <Button 
-                    variant="outline"   
-                    size="sm" 
-                    className="w-full"
+                    variant="default"   
+                    size="default" 
                     onClick={handleDeleteTask}
                 >
                     Delete
                 </Button>
                 <Button 
-                    variant="outline"   
-                    size="sm" 
-                    className="w-full"
+                    variant="default"   
+                    size="default" 
                     onClick={handleMoveTask}
                 >
                     Move
