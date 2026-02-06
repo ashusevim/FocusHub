@@ -77,28 +77,16 @@ function boardReducer(state, action) {
             }
         }
 
-        case 'UPDATE_TASK':
-            const { columnId, taskId, updatedTask } = action;
-
-            // find the task with taskId
+        case 'UPDATE_TASK': {
+            const { taskId, updatedTask } = action.payload;
 
             return {
                 ...state,
-                tasks: taskId,
-                columns: {
-                    ...state.columns,
-                    [columnId]: {
-                        ...state.columns[columnId],
-                        // filter out the taskId from the column
-                        taskIds: state.columns[columnId].taskIds.map((id) => {
-                            if (id === taskId) {
-                                return updatedTask;
-                            }
-                            return id;
-                        })
-                    }
+                tasks: {
+                    [taskId]: updatedTask
                 }
             }
+        }
 
         default:
             return state;
