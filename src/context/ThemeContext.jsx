@@ -22,6 +22,9 @@ export function ThemeProvider({ children }) {
             root.classList.add(resolvedTheme);
         }
 
+        // Save preference for all modes, including "system".
+        localStorage.setItem("theme", theme);
+
         if (theme === "system") {
             
             // checks user's system preference for dark mode
@@ -49,9 +52,6 @@ export function ThemeProvider({ children }) {
             // handling explicit themes & apply the resolved theme 
             applyTheme(theme)
         }
-
-        // Saves the user's preference so it persists across page refreshes.
-        localStorage.setItem("theme", theme);
 
     }, [theme]);
 

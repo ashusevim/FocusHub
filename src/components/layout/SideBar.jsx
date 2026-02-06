@@ -72,8 +72,8 @@ export default function SideBar() {
                     <SidebarMenuButton size="lg" tooltip="Account">
                         <User className="h-5 w-5" />
                         <div className="flex flex-col items-start leading-tight">
-                            <span className="text-sm font-medium">{username}</span>
-                            <span className="text-xs text-muted-foreground">{mailId}</span>
+                            <span className="text-sm font-medium sm:block hidden">{username}</span>
+                            <span className="text-xs text-muted-foreground sm:block hidden">{mailId}</span>
                         </div>
                         <ChevronsUpDown className="ml-auto h-4 w-4" />
                     </SidebarMenuButton>

@@ -1,7 +1,7 @@
 import React from 'react';
 import { MonitorCogIcon, MoonStarIcon, SunIcon } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { useTheme } from 'next-themes';
+import { useTheme } from '@/context/ThemeContext';
 import { cn } from '@/lib/utils';
 
 const THEME_OPTIONS = [
@@ -29,8 +29,10 @@ export function ToggleTheme() {
             transition={{ duration: 0.3 }}
             className="inline-flex items-center overflow-hidden rounded-md"
             role="radiogroup">
-            {THEME_OPTIONS.map((option) => (
+			{THEME_OPTIONS.map((option) => (
 				<button
+					type="button"
+					key={option.value}
                     className={cn(
                         'relative flex size-7 cursor-pointer items-center justify-center rounded-md transition-all',
                         theme === option.value
