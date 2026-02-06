@@ -4,33 +4,37 @@ import * as React from "react"
 import { useState } from "react"
 import { motion, AnimatePresence } from "motion/react"
 import { Menu, X } from "lucide-react"
-import { cn } from "@/lib/utils"
 import { ToggleTheme } from "../ui/toggle-theme"
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "../ui/breadcrumb"
 import { SidebarTrigger } from "../ui/sidebar"
+import { useLocation } from "react-router-dom"
+
+const routeLabels = {
+    "/": "Board",
+    "/dashboard": "Dashboard",
+    "/board": "Board",
+    "/settings": "Settings"
+}
 
 export default function NavBar() {
     const [isOpen, setIsOpen] = useState(false)
+    const location = useLocation();
 
     const toggleMenu = () => setIsOpen(!isOpen)
 
+    const currentLabel = routeLabels[location.pathname] || "Page"
+
     return (
-        <div className="flex justify-center w-full py-2 px-4 border-b bg-background/95 backdrop-blur">
-            <div className="flex items-center justify-between px-6 py-2 w-full max-w-7xl relative z-10">
-                <div className="flex items-center gap-3">
+        <div className="flex justify-center w-full py-2 px-4 border-b bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60">
+            <div className="flex items-center justify-between px-2 sm:px-6 py-2 w-full relative">
+                <div className="flex items-center gap-2 sm:gap-3">
 
-                    <SidebarTrigger className="-ml-1 shrink-0"/>
+                    <SidebarTrigger className="-ml-1 shrink-0" />
 
-                    <div className="h-5 w-px bg-border hidden md:block"/>
-                    
-                    <motion.div
-                        className="w-8 h-8 hidden sm:block"
-                        initial={{ scale: 0.8 }}
-                        animate={{ scale: 1 }}
-                        whileHover={{ rotate: 10 }}
-                        transition={{ duration: 0.3 }}
-                    >
-                        <svg width="50" height="50" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <div className="h-5 w-px bg-border hidden md:block" />
+
+                    <div className="w-8 h-8 shrink-0 hidden sm:block">
+                        <svg width="32" height="32" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <title>FocusHub Logo - Focused Flow</title>
                             <defs>
                                 <linearGradient id="focusGrad" x1="0" y1="0" x2="100" y2="100">
@@ -52,42 +56,31 @@ export default function NavBar() {
                             <circle cx="50" cy="45" r="6" stroke="url(#focusGrad)" strokeWidth="2.5" />
                             <circle cx="50" cy="45" r="2.5" fill="url(#focusGrad)" />
                         </svg>
-                    </motion.div>
+                    </div>
 
                     <Breadcrumb className="hidden md:flex">
                         <BreadcrumbList>
                             <BreadcrumbItem>
-                                <BreadcrumbLink href="/">FocusHub</BreadcrumbLink>    
+                                <BreadcrumbLink href="/">FocusHub</BreadcrumbLink>
                             </BreadcrumbItem>
-                            <BreadcrumbSeparator/>
+                            <BreadcrumbSeparator />
                             <BreadcrumbItem>
-                                <BreadcrumbPage>Current View</BreadcrumbPage>
+                                <BreadcrumbPage>{currentLabel}</BreadcrumbPage>
                             </BreadcrumbItem>
                         </BreadcrumbList>
                     </Breadcrumb>
                 </div>
 
-                {/* center */}
-                <div className="flex-1"></div>
-
                 {/* Desktop CTA Button */}
                 <div className="flex items-center gap-2 md:gap-3">
-			        <ToggleTheme />
-                    
-                    <motion.div
-                        className="hidden md:block"
-                        initial={{ opacity: 0, x: 20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ duration: 0.3, delay: 0.2 }}
-                        whileHover={{ scale: 1.05 }}
+                    <ToggleTheme />
+
+                    <a
+                        href="#"
+                        className="hidden md:inline-flex items-center justify-center px-4 py-2 text-sm font-medium transition-colors border rounded-full hover:bg-accent"
                     >
-                        <a
-                            href="#"
-                            className="inline-flex items-center justify-center px-4 py-2 text-sm font-medium transition-colors border rounded-full hover:bg-accent"
-                        >
-                            Account
-                        </a>
-                    </motion.div>
+                        Account
+                    </a>
 
                     {/* mobile menu button */}
                     <button
@@ -123,11 +116,15 @@ export default function NavBar() {
                             <X className="h-6 w-6" />
                         </motion.button>
                         <div className="flex flex-col space-y-6">
-                            <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Account</span>
-                            <a href="#" className="text-lg font-medium">Profile Settings</a>
-                            <a href="#" className="text-lg font-medium">Notifications</a>
-                            <div>
-                                <ToggleTheme/>
+                            <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Navigation</span>
+                            <a href="/dashboard" className="text-lg font-medium" onClick={toggleMenu}>Dashboard</a>
+                            <a href="/board" className="text-lg font-medium" onClick={toggleMenu}>Board</a>
+                            <a href="/settings" className="text-lg font-medium" onClick={toggleMenu}>Settings</a>
+                            <div className="pt-4 border-t">
+                                <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Preferences</span>
+                                <div className="mt-3">
+                                    <ToggleTheme />
+                                </div>
                             </div>
                         </div>
                     </motion.div>
