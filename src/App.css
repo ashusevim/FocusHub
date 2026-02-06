@@ -1,4 +1,4 @@
-.modal-overlay{
+.modal-overlay {
     position: fixed;
     top: 0;
     right: 0;
@@ -11,13 +11,14 @@
     z-index: 1000;
 }
 
-.modal-content{
+.modal-content {
     background: var(--background);
     color: var(--foreground);
     border: 1px solid var(--border);
-    padding: 20px;
+    padding: 40px;
     border-radius: 8px;
-    max-width: 400px;
+    max-width: 540px;
     width: 100%;
+    height: 300px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
