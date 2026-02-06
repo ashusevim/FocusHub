@@ -1,5 +1,5 @@
-function boardReducer(state, action){
-    switch(action.type){
+function boardReducer(state, action) {
+    switch (action.type) {
         case 'ADD_TASK': {
 
             const newTask = {
@@ -31,10 +31,10 @@ function boardReducer(state, action){
 
         case 'MOVE_TASK': {
             const { taskId, sourceColumnId, targetColumnId } = action;
-            
+
             // 1. create new source taskIds (remove task)
-            const newSourceTaskIds = state.columns[sourceColumnId].taskIds.filter(id => id!==taskId);
-            
+            const newSourceTaskIds = state.columns[sourceColumnId].taskIds.filter(id => id !== taskId);
+
             // 2. create new target taskIds (add task)
             const newTargetTaskIds = [...state.columns[targetColumnId].taskIds, taskId]
 
@@ -60,7 +60,7 @@ function boardReducer(state, action){
             const { taskId, columnId } = action;
 
             // remove the task from the task object
-            const newTasks = {...state.tasks};
+            const newTasks = { ...state.tasks };
             delete newTasks[taskId];
 
             return {
@@ -71,11 +71,34 @@ function boardReducer(state, action){
                     [columnId]: {
                         ...state.columns[columnId],
                         // filter out the taskId from the column
-                        taskIds: state.columns[columnId].taskIds.filter(id=>id!==taskId)
+                        taskIds: state.columns[columnId].taskIds.filter(id => id !== taskId)
                     }
                 }
             }
         }
+
+        case 'UPDATE_TASK':
+            const { columnId, taskId, updatedTask } = action;
+
+            // find the task with taskId
+
+            return {
+                ...state,
+                tasks: taskId,
+                columns: {
+                    ...state.columns,
+                    [columnId]: {
+                        ...state.columns[columnId],
+                        // filter out the taskId from the column
+                        taskIds: state.columns[columnId].taskIds.map((id) => {
+                            if (id === taskId) {
+                                return updatedTask;
+                            }
+                            return id;
+                        })
+                    }
+                }
+            }
 
         default:
             return state;

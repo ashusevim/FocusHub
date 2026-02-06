@@ -9,6 +9,7 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card"
+import TaskModal from "../modal/TaskModal";
 
 export default function TaskCard({ task, columnId }) {
     const { dispatch } = useBoard();
@@ -23,7 +24,7 @@ export default function TaskCard({ task, columnId }) {
                 targetColumnId: targetColumnId
             })
         }
-        else{
+        else {
             console.log("Invalid target column ID");
         }
     }
@@ -34,6 +35,10 @@ export default function TaskCard({ task, columnId }) {
             taskId: task.id,
             columnId: columnId
         })
+    }
+
+    const renderModal = () => {
+        <TaskModal task={task} columnId={columnId} />
     }
     return (
         <Card size="sm" className="mx-auto w-full max-w-sm">
@@ -54,74 +59,28 @@ export default function TaskCard({ task, columnId }) {
                 </p>
             </CardContent>
             <CardFooter className={"gap-2"}>
-                <Button 
-                    variant="default"   
-                    size="default" 
+                <Button
+                    variant="default"
+                    size="default"
                     onClick={handleDeleteTask}
                 >
                     Delete
                 </Button>
-                <Button 
-                    variant="default"   
-                    size="default" 
+                <Button
+                    variant="default"
+                    size="default"
                     onClick={handleMoveTask}
                 >
                     Move
+                </Button>
+                <Button
+                    variant="default"
+                    size="default"
+                    onClick={renderModal}
+                >
+                    Edit
                 </Button>
             </CardFooter>
         </Card>
     )
 }
-
-
-// function TaskCard({ task, columnId }) {
-//     const { dispatch } = useBoard()
-
-//     const handleMoveTask = () => {
-//         let targetColumnId = prompt("Enter a columnID (todo, inprogress, done):");
-//         if (targetColumnId) {
-//             dispatch({
-//                 type: 'MOVE_TASK',
-//                 taskId: task.id,
-//                 sourceColumnId: columnId,
-//                 targetColumnId: targetColumnId
-//             })
-//         }
-//         else{
-//             console.log("Invalid target column ID");
-//         }
-//     }
-
-//     const handleDeleteTask = () => {
-//         dispatch({
-//             type: 'DELETE_TASK',
-//             taskId: task.id,
-//             columnId: columnId
-//         })
-//     }
-
-//     return (
-//         <div className="border-2 rounded-xl p-5 space-y-3">
-
-//             <div className="space-x-1.5 pt-2">
-//                 {task.tags.map((tag, index) => {
-//                     <span
-//                         key={index} className="border bg-amber-100"
-//                     >{tag}</span>;
-//                 })}
-//             </div>
-
-//             <div className="flex gap-2 pt-4">
-//                 <UiButton
-//                     text={"Delete"}
-//                     onClick={handleDeleteTask}
-//                 />
-//                 <UiButton
-//                     text={"Move"}
-//                     onClick={handleMoveTask}
-//                 />
-//             </div>
-//         </div>
-//     );
-// }
-// export default TaskCard;
