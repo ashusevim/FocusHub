@@ -7,6 +7,7 @@ import Dashboard from "../src/pages/Dashboard.jsx";
 import BoardPage from "../src/pages/BoardPage.jsx";
 import Settings from "../src/pages/Settings.jsx";
 import { BoardProvider } from "@/context/BoardContext.jsx";
+import { ThemeProvider } from "./context/ThemeContext";
 
 
 const router = createBrowserRouter([
@@ -24,8 +25,10 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById("root")).render(
     <React.StrictMode>
-        <BoardProvider>
-            <RouterProvider router={router} />
-        </BoardProvider>
+        <ThemeProvider>
+            <BoardProvider>
+                <RouterProvider router={router} />
+            </BoardProvider>
+        </ThemeProvider>
     </React.StrictMode>
 );

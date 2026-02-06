@@ -24,19 +24,8 @@ const THEME_OPTIONS = [
 export function ToggleTheme() {
 	const { theme, setTheme } = useTheme();
 
-	const [isMounted, setIsMounted] = React.useState(false);
-
-	React.useEffect(() => {
-		setIsMounted(true);
-	}, []);
-
-	if (!isMounted) {
-		return <div className="flex h-8 w-24" />;
-	}
-
 	return (
         <motion.div
-            key={String(isMounted)}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.3 }}

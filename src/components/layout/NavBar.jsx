@@ -15,13 +15,16 @@ export default function NavBar() {
     const toggleMenu = () => setIsOpen(!isOpen)
 
     return (
-        <div className="flex justify-center w-full py-6 px-4 border-b bg-background/95 backdrop-blur">
+        <div className="flex justify-center w-full py-2 px-4 border-b bg-background/95 backdrop-blur">
             <div className="flex items-center justify-between px-6 py-2 w-full max-w-7xl relative z-10">
-                <div className="flex items-center gap-4">
+                <div className="flex items-center gap-3">
 
-                    <SidebarTrigger />
+                    <SidebarTrigger className="-ml-1 shrink-0"/>
+
+                    <div className="h-5 w-px bg-border hidden md:block"/>
+                    
                     <motion.div
-                        className="w-8 h-8 mr-6"
+                        className="w-8 h-8 hidden sm:block"
                         initial={{ scale: 0.8 }}
                         animate={{ scale: 1 }}
                         whileHover={{ rotate: 10 }}
@@ -64,20 +67,13 @@ export default function NavBar() {
                     </Breadcrumb>
                 </div>
 
-                <div className="relative flex items-center justify-center mx-4">
-			        <div
-				        aria-hidden="true"
-				        className={cn(
-					        'absolute inset-0 -z-10 size-full',
-					        'bg-[radial-gradient(color-mix(in_oklab,--theme(--color-foreground/.1)30%,transparent)_2px,transparent_2px)]',
-					    'bg-size:12px_12px',
-				    )}
-			    />
-			        <ToggleTheme />
-		        </div>
+                {/* center */}
+                <div className="flex-1"></div>
 
                 {/* Desktop CTA Button */}
-                <div className="flex items-center gap-4">
+                <div className="flex items-center gap-2 md:gap-3">
+			        <ToggleTheme />
+                    
                     <motion.div
                         className="hidden md:block"
                         initial={{ opacity: 0, x: 20 }}
@@ -92,64 +88,47 @@ export default function NavBar() {
                             Account
                         </a>
                     </motion.div>
-                </div>
 
-                {/* Mobile Menu Button */}
-                <motion.button className="md:hidden flex items-center" onClick={toggleMenu} whileTap={{ scale: 0.9 }}>
-                    <Menu className="h-6 w-6 text-gray-900" />
-                </motion.button>
+                    {/* mobile menu button */}
+                    <button
+                        type="button"
+                        className="inline-flex h-9 w-9 items-center justify-center rounded-md border md:hidden"
+                        onClick={toggleMenu}
+                        aria-label="Toggle menu"
+                    >
+                        <Menu className="h-5 w-5" />
+                    </button>
+                </div>
             </div>
 
             {/* Mobile Menu Overlay */}
             <AnimatePresence>
                 {isOpen && (
                     <motion.div
-                        className="fixed inset-0 bg-white z-50 pt-24 px-6 md:hidden"
+                        className="fixed inset-0 bg-background z-50 pt-20 px-6 md:hidden"
                         initial={{ opacity: 0, x: "100%" }}
                         animate={{ opacity: 1, x: 0 }}
                         exit={{ opacity: 0, x: "100%" }}
                         transition={{ type: "spring", damping: 25, stiffness: 300 }}
                     >
                         <motion.button
-                            className="absolute top-6 right-6 p-2"
+                            className="absolute top-4 right-4 p-2"
                             onClick={toggleMenu}
                             whileTap={{ scale: 0.9 }}
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             transition={{ delay: 0.2 }}
+                            aria-label="Close menu"
                         >
-                            <X className="h-6 w-6 text-gray-900" />
+                            <X className="h-6 w-6" />
                         </motion.button>
                         <div className="flex flex-col space-y-6">
-                            {["Home", "Pricing", "Docs", "Projects"].map((item, i) => (
-                                <motion.div
-                                    key={item}
-                                    initial={{ opacity: 0, x: 20 }}
-                                    animate={{ opacity: 1, x: 0 }}
-                                    transition={{ delay: i * 0.1 + 0.1 }}
-                                    exit={{ opacity: 0, x: 20 }}
-                                >
-                                    <a href="#" className="text-base text-gray-900 font-medium" onClick={toggleMenu}>
-                                        {item}
-                                    </a>
-                                </motion.div>
-                            ))}
-
-                            <motion.div
-                                initial={{ opacity: 0, y: 20 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ delay: 0.5 }}
-                                exit={{ opacity: 0, y: 20 }}
-                                className="pt-6"
-                            >
-                                <a
-                                    href="#"
-                                    className="inline-flex items-center justify-center w-full px-5 py-3 text-base text-white bg-black rounded-full hover:bg-gray-800 transition-colors "
-                                    onClick={toggleMenu}
-                                >
-                                    Get Started
-                                </a>
-                            </motion.div>
+                            <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Account</span>
+                            <a href="#" className="text-lg font-medium">Profile Settings</a>
+                            <a href="#" className="text-lg font-medium">Notifications</a>
+                            <div>
+                                <ToggleTheme/>
+                            </div>
                         </div>
                     </motion.div>
                 )}

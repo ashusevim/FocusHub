@@ -95,6 +95,7 @@ import {
     SidebarFooter,
     SidebarTrigger,
 } from "@/components/ui/sidebar"
+import { Item } from "@radix-ui/react-dropdown-menu"
 
 import {
     User,
@@ -104,22 +105,18 @@ import {
     LayoutDashboard,
     KanbanSquare
 } from "lucide-react"
+import { NavLink } from "react-router-dom"
 
 const items = [
     {
-        title: "dashboard",
-        url: "#",
+        title: "Dashboard",
+        url: "/dashboard",
         icon: LayoutDashboard,
     },
     {
-        title: "board",
+        title: "Board",
         url: "/board",
         icon: KanbanSquare,
-    },
-    {
-        title: "Search",
-        url: "#",
-        icon: Search,
     },
     {
         title: "Settings",
@@ -139,10 +136,13 @@ export default function SideBar() {
                             {items.map((item) => (
                                 <SidebarMenuItem key={item.title}>
                                     <SidebarMenuButton asChild tooltip={item.title}>
-                                        <a href={item.url}>
-                                            <item.icon />
+                                        <NavLink 
+                                            to={item.url}
+                                            className={({ isActive }) => isActive ? "bg-sidebar-accent text-sidebar-accent-foreground" : ""}    
+                                        >
+                                            <item.icon/>
                                             <span>{item.title}</span>
-                                        </a>
+                                        </NavLink>
                                     </SidebarMenuButton>
                                 </SidebarMenuItem>
                             ))}
