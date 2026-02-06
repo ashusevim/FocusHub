@@ -6,6 +6,8 @@ import { motion, AnimatePresence } from "motion/react"
 import { Menu, X } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { ToggleTheme } from "../ui/toggle-theme"
+import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "../ui/breadcrumb"
+import { SidebarTrigger } from "../ui/sidebar"
 
 export default function NavBar() {
     const [isOpen, setIsOpen] = useState(false)
@@ -13,9 +15,11 @@ export default function NavBar() {
     const toggleMenu = () => setIsOpen(!isOpen)
 
     return (
-        <div className="flex justify-center w-full py-6 px-4">
-            <div className="flex items-center justify-evenly px-6 py-3 bg-white rounded-full shadow-lg w-full max-w-3xl relative z-10">
-                <div className="flex items-center justify-center">
+        <div className="flex justify-center w-full py-6 px-4 border-b bg-background/95 backdrop-blur">
+            <div className="flex items-center justify-between px-6 py-2 w-full max-w-7xl relative z-10">
+                <div className="flex items-center gap-4">
+
+                    <SidebarTrigger />
                     <motion.div
                         className="w-8 h-8 mr-6"
                         initial={{ scale: 0.8 }}
@@ -46,26 +50,21 @@ export default function NavBar() {
                             <circle cx="50" cy="45" r="2.5" fill="url(#focusGrad)" />
                         </svg>
                     </motion.div>
+
+                    <Breadcrumb className="hidden md:flex">
+                        <BreadcrumbList>
+                            <BreadcrumbItem>
+                                <BreadcrumbLink href="/">FocusHub</BreadcrumbLink>    
+                            </BreadcrumbItem>
+                            <BreadcrumbSeparator/>
+                            <BreadcrumbItem>
+                                <BreadcrumbPage>Current View</BreadcrumbPage>
+                            </BreadcrumbItem>
+                        </BreadcrumbList>
+                    </Breadcrumb>
                 </div>
 
-                {/* Desktop Navigation */}
-                <nav className="hidden md:flex items-center space-x-8">
-                    {["Board"].map((item) => (
-                        <motion.div
-                            key={item}
-                            initial={{ opacity: 0, y: -10 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.3 }}
-                            whileHover={{ scale: 1.05 }}
-                        >
-                            <a href="#" className="text-sm text-gray-900 hover:text-gray-600 transition-colors font-medium">
-                                {item}
-                            </a>
-                        </motion.div>
-                    ))}
-                </nav>
-
-                <div className="relative flex w-full items-center justify-center mx-4">
+                <div className="relative flex items-center justify-center mx-4">
 			        <div
 				        aria-hidden="true"
 				        className={cn(
@@ -78,20 +77,22 @@ export default function NavBar() {
 		        </div>
 
                 {/* Desktop CTA Button */}
-                <motion.div
-                    className="hidden md:block"
-                    initial={{ opacity: 0, x: 20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.3, delay: 0.2 }}
-                    whileHover={{ scale: 1.05 }}
-                >
-                    <a
-                        href="#"
-                        className="inline-flex items-center justify-center px-5 py-2 text-sm text-white bg-black rounded-full hover:bg-gray-800 transition-colors"
+                <div className="flex items-center gap-4">
+                    <motion.div
+                        className="hidden md:block"
+                        initial={{ opacity: 0, x: 20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ duration: 0.3, delay: 0.2 }}
+                        whileHover={{ scale: 1.05 }}
                     >
-                        Get Started
-                    </a>
-                </motion.div>
+                        <a
+                            href="#"
+                            className="inline-flex items-center justify-center px-4 py-2 text-sm font-medium transition-colors border rounded-full hover:bg-accent"
+                        >
+                            Account
+                        </a>
+                    </motion.div>
+                </div>
 
                 {/* Mobile Menu Button */}
                 <motion.button className="md:hidden flex items-center" onClick={toggleMenu} whileTap={{ scale: 0.9 }}>
