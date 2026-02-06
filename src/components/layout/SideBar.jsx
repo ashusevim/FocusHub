@@ -70,12 +70,12 @@ export default function SideBar() {
             <SidebarFooter>
                 <SidebarGroup>
                     <SidebarMenuButton size="lg" tooltip="Account">
-                        <User className="h-5 w-5" />
-                        <div className="flex flex-col items-start leading-tight">
-                            <span className="text-sm font-medium sm:block hidden">{username}</span>
-                            <span className="text-xs text-muted-foreground sm:block hidden">{mailId}</span>
+                        <User className="h-3 w-3" />
+                        <div className="flex flex-col items-start leading-tight sm:block group-data-[collapsible=icon]:hidden">
+                            <span className="text-sm font-medium">{username}</span>
+                            <span className="text-xs text-muted-foreground">{mailId}</span>
                         </div>
-                        <ChevronsUpDown className="ml-auto h-4 w-4" />
+                        <ChevronsUpDown className="ml-auto h-4 w-4 sm:block group-data-[collapsible=icon]:hidden" />
                     </SidebarMenuButton>
                 </SidebarGroup>
             </SidebarFooter>
