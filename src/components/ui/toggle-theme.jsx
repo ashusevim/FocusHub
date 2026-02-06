@@ -1,5 +1,3 @@
-'use client';
-
 import React from 'react';
 import { MonitorCogIcon, MoonStarIcon, SunIcon } from 'lucide-react';
 import { motion } from 'framer-motion';
