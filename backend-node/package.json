@@ -18,5 +18,11 @@
         "express": "^5.2.1",
         "ts-node": "^10.9.2",
         "typescript": "^5.9.3"
+    },
+    "dependencies": {
+        "@types/dotenv": "^6.1.1",
+        "dotenv": "^17.2.4",
+        "mongodb": "^7.1.0",
+        "mongoose": "^9.1.6"
     }
 }
