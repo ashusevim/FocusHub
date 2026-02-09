@@ -1,7 +1,7 @@
-import { Timestamp } from "bson";
-import mongooes from "mongoose";
+import { Schema, model } from "mongoose";
 
-const userSchema = new mongooes.Schema({
+// Schema corresponding to the document interface.
+const userSchema = new Schema({
     username: {
     	type: String,
     	required: true,
@@ -17,9 +17,7 @@ const userSchema = new mongooes.Schema({
     password: {
     	type: String,
      	required: true,
-    },
-   	},
-    { timestamps: true },
-);
+    }
+}, {timestamps: true});
 
-export const user = mongooes.model("User", userSchema);
+export const User = model("User", userSchema);

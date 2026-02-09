@@ -23,4 +23,4 @@ const columnSchema = new mongoose.Schema({
 	]
 }, { timestamps: true })
 
-export const column = mongoose.model('Task', columnSchema);
+export const column = mongoose.model('Column', columnSchema);
