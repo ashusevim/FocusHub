@@ -8,17 +8,21 @@ import BoardPage from "../src/pages/BoardPage.jsx";
 import Settings from "../src/pages/Settings.jsx";
 import { BoardProvider } from "@/context/BoardContext.jsx";
 import { ThemeProvider } from "./context/ThemeContext";
-
+import RegisterPage from "./pages/RegisterPage";
+import LoginPage from "./pages/LoginPage";
 
 const router = createBrowserRouter([
     {
         path: "/",
         element: <App />,
         children: [
+            { index: true, element: <LoginPage /> },
+            { path: "register", element: <RegisterPage /> },
+            { path : "login",  element: <LoginPage /> },
+            
             { path: "dashboard", element: <Dashboard /> },
             { path: "board", element: <BoardPage /> },
             { path: "settings", element: <Settings /> },
-            { index: true, element: <BoardPage/> } // default route
         ]
     }
 ])
