@@ -1,7 +1,6 @@
 import { Button } from "@/components/ui/button";
 
 function RegisterPage() {
-
     const handleRegister = async (e) => {
         e.preventDefault();
 
