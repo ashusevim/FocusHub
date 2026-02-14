@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 
 function RegisterPage() {
     return (
-        <div className="modal-content flex flex-col w-10 justify-evenly" onClick={(e) => e.stopPropagation()}>
+        <div className="modal-content flex flex-col w-10 justify-evenly">
             <h2 className="text-3xl mb-3 text-foreground">Register</h2>
             <label className="flex items-center mb-2 gap-2 text-foreground">
                 <h2>Username</h2>
