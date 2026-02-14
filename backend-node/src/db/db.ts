@@ -1,9 +1,9 @@
 import mongoose from "mongoose";
 import dotenv from "dotenv";
-import { DB_NAME } from "../constant.ts";
+import { DB_NAME } from "../constant.js";
 dotenv.config();
 
-export default async function DBConnect() {
+async function DBConnect() {
     try {
         const URI = process.env.DB_URI;
         const connectionInstance = await mongoose.connect(`${URI}/${DB_NAME}`);
@@ -14,4 +14,4 @@ export default async function DBConnect() {
     }
 }
 
-// export { DBConnect };
+export default { DBConnect };

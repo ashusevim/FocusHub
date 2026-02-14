@@ -11,8 +11,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { Link } from "react-router-dom"
 
-
-export function LoginForm({
+export function RegisterForm({
     className,
     ...props
 }) {
@@ -23,9 +22,9 @@ export function LoginForm({
                     <form className="space-y-6">
                         <FieldGroup>
                             <div className="flex flex-col items-center gap-2 text-center">
-                                <h1 className="text-2xl font-bold">Welcome back</h1>
+                                <h1 className="text-2xl font-bold">Welcome to FocusHub</h1>
                                 <p className="text-muted-foreground text-balance">
-                                    Login to your FocusHub account
+                                    Register to your FocusHub account
                                 </p>
                             </div>
                             <Field>
@@ -43,7 +42,7 @@ export function LoginForm({
                             </Field>
                             
                             <Field>
-                                <Button type="submit">Login</Button>
+                                <Button type="submit">Register</Button>
                             </Field>
                             
                             <FieldSeparator className="*:data-[slot=field-separator-content]:bg-card">
@@ -51,10 +50,9 @@ export function LoginForm({
                             </FieldSeparator>
                             
                             <FieldDescription className="text-center">
-                                Don&apos;t have an account?{" "} 
-                                <Link to="/register" className="text-primary underline-offset-2 hover:underline">
-                                    Sign up
-                                </Link>
+                                Do you have an account? {" "}
+                                <Link to="/login" className="text-primary underline-offset-2 hover:underline">
+                                Sign in</Link>
                             </FieldDescription>
                         </FieldGroup>
                     </form>
