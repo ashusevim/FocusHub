@@ -9,18 +9,38 @@ import {
     FieldSeparator,
 } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
-import { Link } from "react-router-dom"
-
+import { Link, Navigate } from "react-router-dom"
+import { useState } from "react"
 
 export function LoginForm({
     className,
     ...props
 }) {
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    
+    const handleLogin = async (e) => {
+        e.preventDefault();
+        try {
+            const response = await fetch("http://localhost:3000/login", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ email, password })
+            })
+            const data = await response.json();
+            console.log(data);
+        } catch (error) {
+            console.log("Login failed: ", error);
+        }
+    }
+
     return (
         <div className={cn("flex min-h-screen items-center justify-center px-4", className)} {...props}>
             <Card className="w-full max-w-md overflow-hidden">
                 <CardContent className="p-6 md:p-8">
-                    <form className="space-y-6">
+                    <form onSubmit={handleLogin} className="space-y-6">
                         <FieldGroup>
                             <div className="flex flex-col items-center gap-2 text-center">
                                 <h1 className="text-2xl font-bold">Welcome back</h1>
@@ -30,7 +50,7 @@ export function LoginForm({
                             </div>
                             <Field>
                                 <FieldLabel htmlFor="email">Email</FieldLabel>
-                                <Input id="email" type="email" placeholder="user@gmail.com" required />
+                                <Input id="email" type="email" placeholder="user@gmail.com" required value={email} onChange={(e)=>setEmail(e.target.value)}/>
                             </Field>
                             <Field>
                                 <div className="flex items-center">
@@ -39,7 +59,7 @@ export function LoginForm({
                                         Forgot your password?
                                     </a>
                                 </div>
-                                <Input id="password" type="password" required />
+                                <Input id="password" type="password" required value={password} onChange={(e)=>setPassword(e.target.value)}/>
                             </Field>
                             
                             <Field>
