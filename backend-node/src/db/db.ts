@@ -3,7 +3,7 @@ import dotenv from "dotenv";
 import { DB_NAME } from "../constant.js";
 dotenv.config();
 
-async function DBConnect() {
+export async function DBConnect() {
     try {
         const URI = process.env.DB_URI;
         const connectionInstance = await mongoose.connect(`${URI}/${DB_NAME}`);
@@ -13,5 +13,3 @@ async function DBConnect() {
         process.exit(1);
     }
 }
-
-export default { DBConnect };

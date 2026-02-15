@@ -1,31 +1,17 @@
 import express from "express";
-import DBConnect from "./db/db.js";
+import { DBConnect } from "./db/db.js";
 import dotenv from "dotenv"
-import { isValidEmail, isValidPassword, isValidUsername } from "./utils/inputValidation.js";
+import { isValidEmail, isValidUsername } from "./utils/inputValidation.js";
+import { User } from "./schema/user.models.js";
+import bcrypt from "bcrypt";
 
 dotenv.config({
     path: "./.env"
 })
 
+DBConnect();
+
 const app = express();
-import { User } from "./schema/user.models.js";
-
-// Connect to the database
-DBConnect()
-    .then(() => {
-        const port = process.env.PORT || 8000;
-        const server = app.listen(port, () => {
-            console.log(`Server is running on port: ${port}`)
-        })
-
-        server.on("error", (error) => {
-            console.log('Server error: ', error);
-            process.exit(1);
-        })
-    })
-    .catch((error) => {
-        console.log("MongoDB connection failed: ", error)
-    })
 
 // Middleware to parse JSON bodies
 app.use(express.json());
@@ -39,7 +25,7 @@ app.post("/register", async (req, res) => {
     const { username, email, password } = req.body;
 
     // Validate input fields
-    if(!isValidEmail(email) || !isValidUsername(username) || !isValidPassword(password)){
+    if(!isValidEmail(email) || !isValidUsername(username) || !password){
         return res.status(400).json({
             message: "All fields are required"
         })
@@ -84,15 +70,14 @@ app.post("/register", async (req, res) => {
 app.post("/login", async (req, res) => {
     const { email, password } = req.body;
 
-    if(!isValidEmail(email) || !isValidPassword(password)){
+    if(!isValidEmail(email) || !password){
         return res.status(400).json({
             message: "All fields are required"
         })
     }
 
-    const user = await User.findOne({
-        $or: [{ email }, { password }]
-    })
+    // check if user with provided email exists in database
+    const user = await User.findOne({ email })
 
     if(!user){
         return res.status(400).json({
@@ -110,6 +95,10 @@ app.post("/login", async (req, res) => {
     return res.status(200).json({
         message: "User logged in successfully"
     })
+})
+
+app.listen(process.env.PORT || 3000, () => {
+    console.log(`Server is running on port ${process.env.PORT || 3000}`);
 })
 
 app.get("/", (req, res) => {
