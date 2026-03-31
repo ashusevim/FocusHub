@@ -1,0 +1,39 @@
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Environment files
+.env
+.env.*
+
+# Logs
+logs/
+*.log
+
+# Build outputs
+dist/
+build/
+out/
+coverage/
+*.tsbuildinfo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Vite
+.vite/
+
+# IDE/editor files
+.vscode/
+.idea/
+*.swp
+
+# Misc
+*.local
