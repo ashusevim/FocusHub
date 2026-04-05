@@ -18,7 +18,7 @@ function App() {
     }
 
     if(!isAuthenticated && !isAuthPage){
-        return <Navigate to="/login" replace />;    
+        return <Navigate to="/login" replace />;
     }
 
     // we are on an auth page, we don't want to show the sidebar or navbar

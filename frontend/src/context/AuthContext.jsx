@@ -27,7 +27,7 @@ const decodeJwtPayload = (token) => {
 	);
 
 	return JSON.parse(json);
-}
+};
 
 const isExpiredToken = (payload) => {
 	return typeof payload?.exp !== "number" || payload.exp * 1000 <= Date.now();
@@ -79,7 +79,7 @@ export default function AuthProvider({ children }) {
 		try {
 			const payload = decodeJwtPayload(newToken);
 
-			if (isExpiredToken(newToken)) {
+			if (isExpiredToken(payload)) {
 				throw new Error("Expired JWT");
 			}
 

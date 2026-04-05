@@ -20,7 +20,6 @@ import {
 } from "lucide-react"
 import { NavLink } from "react-router-dom"
 import { useAuth } from "@/context/AuthContext"
-import { useState } from "react"
 
 const items = [
     {
@@ -41,7 +40,7 @@ const items = [
 ]
 export default function SideBar() {
     // const [user,  setUser] = useState(null)
-    
+
     const { user } = useAuth();
 
     return (
@@ -54,9 +53,9 @@ export default function SideBar() {
                             {items.map((item) => (
                                 <SidebarMenuItem key={item.title}>
                                     <SidebarMenuButton asChild tooltip={item.title}>
-                                        <NavLink 
+                                        <NavLink
                                             to={item.url}
-                                            className={({ isActive }) => isActive ? "bg-sidebar-accent text-sidebar-accent-foreground" : ""}    
+                                            className={({ isActive }) => isActive ? "bg-sidebar-accent text-sidebar-accent-foreground" : ""}
                                         >
                                             <item.icon/>
                                             <span>{item.title}</span>
@@ -74,8 +73,8 @@ export default function SideBar() {
                     <SidebarMenuButton size="lg" tooltip="Account">
                         <User className="h-4 w-4" />
                         <div className="flex flex-col leading-tight group-data-[collapsible=icon]:hidden">
-                            <span className="text-sm font-medium">{user}</span>
-                            <span className="text-xs text-muted-foreground">{user}</span>
+                            <span className="text-sm font-medium">{user?.username}</span>
+                            <span className="text-xs text-muted-foreground">{user?.email}</span>
                         </div>
                         <ChevronsUpDown className="ml-auto h-4 w-4 sm:block group-data-[collapsible=icon]:hidden" />
                     </SidebarMenuButton>
