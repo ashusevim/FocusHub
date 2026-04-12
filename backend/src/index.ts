@@ -34,7 +34,7 @@ const requireAuth = (req: AuthenticatedRequest, res: Response, next: NextFunctio
     try {
         const authHeader = req.header("authorization");
 
-        if (!authHeader || !authHeader.startsWith("Bearer ")) {
+        if (!authHeader || !authHeader.startsWith("Bearer: ")) {
             return res.status(401).json({
                 message: "Unauthorized",
             });
@@ -76,7 +76,7 @@ app.put("/me", requireAuth, async (req: AuthenticatedRequest, res: Response) => 
 
         if(!hasUsername && !hasEmail){
             return res.status(400).json({
-                message: "At least one field is required"
+                message: "At least one field is required: username or email"
             })
         }
 
