@@ -2,19 +2,21 @@
 
 import * as React from "react"
 import { useState } from "react"
-import { motion, AnimatePresence } from "motion/react"
+import { AnimatePresence } from "motion/react"
 import { Menu, X } from "lucide-react"
 import { ToggleTheme } from "../ui/toggle-theme"
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "../ui/breadcrumb"
 import { SidebarTrigger } from "../ui/sidebar"
 import { useLocation } from "react-router-dom"
+import { useAuth } from "@/context/AuthContext"
+import { Button } from "@/components/ui/button"
 
 const routeLabels = {
     "/": "Board",
     "/dashboard": "Dashboard",
     "/board": "Board",
     "/settings": "Settings",
-    "/account": "Account"
+	"/account": "Account"
 }
 
 export default function NavBar() {
@@ -24,6 +26,8 @@ export default function NavBar() {
     const toggleMenu = () => setIsOpen(!isOpen)
 
     const currentLabel = routeLabels[location.pathname] || "Page"
+
+	const { logout } = useAuth();
 
     return (
         <div className="flex justify-center w-full py-2 px-4 border-b bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60">
@@ -81,9 +85,13 @@ export default function NavBar() {
                         className="hidden md:inline-flex items-center justify-center px-4 py-2 text-sm font-medium transition-colors border rounded-full hover:bg-accent"
                     >
                         Account
-                    </a>
+					</a>
 
-                    {/* mobile menu button */}
+					<Button varient="link" size="default" onClick={() => logout()}>
+						logout
+					</Button>
+
+					{/* mobile menu button */}
                     <button
                         type="button"
                         className="inline-flex h-9 w-9 items-center justify-center rounded-md border md:hidden"

@@ -11,6 +11,7 @@ import { ThemeProvider } from "./context/ThemeContext";
 import RegisterPage from "./pages/RegisterPage";
 import LoginPage from "./pages/LoginPage";
 import Account from "./pages/Account.jsx";
+import EditProfile from "./pages/EditProfile";
 import AuthProvider from "./context/AuthContext";
 
 const router = createBrowserRouter([
@@ -21,11 +22,12 @@ const router = createBrowserRouter([
             { index: true, element: <LoginPage /> },
             { path: "register", element: <RegisterPage /> },
             { path : "login",  element: <LoginPage /> },
-            
+
             { path: "dashboard", element: <Dashboard /> },
             { path: "board", element: <BoardPage /> },
             { path: "settings", element: <Settings /> },
-            { path: "account", element: <Account /> },
+			{ path: "account", element: <Account /> },
+			{ path: "edit-profile", element: <EditProfile /> }
         ]
     }
 ])
