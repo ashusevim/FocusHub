@@ -7,6 +7,7 @@ import bcrypt from "bcrypt";
 import cors from "cors";
 import { hashPassword } from "./utils/hashService.js";
 import { generateToken, verifyToken } from "./utils/jwtService.js";
+import { task as Task } from "./schema/task.models.js"
 
 dotenv.config({
     path: "./.env",
@@ -282,45 +283,35 @@ app.post("/login", async (req, res) => {
         },
         token: token,
     });
+});
 
-    const requireAuth = (
-        req: AuthenticatedRequest,
-        res: Response,
-        next: NextFunction,
-    ) => {
-        try {
-            const authHeader = req.header("authorization");
+const validColumns = new Set(["todo", "inprogress", "done"]);
 
-            if (!authHeader || !authHeader.startsWith("Bearer ")) {
-                return res.status(401).json({
-                    message: "Unauthorized",
-                });
-            }
+const toClientTask = (doc: any) => ({
+    id: doc._id.toString(),
+    title: doc.title,
+    tags: doc.tags ?? [],
+    description: doc.description ?? "",
+})
 
-            const token = authHeader.slice("Bearer ".length).trim();
-            const decoded = verifyToken(token) as { userId?: string };
-
-            if (!decoded?.userId) {
-                return res.status(401).json({
-                    message: "Invalid token payload",
-                });
-            }
-
-            req.auth = { userId: decoded.userId };
-            next();
-        } catch {
-            return res.status(401).json({
-                message: "Invalid or expired token",
-            });
-        }
+const buildBoardState = (docs: any[]) => {
+    const state = {
+        columns: {
+            "todo": { id: "todo", title: "To Do", taskIds: [] as string[] },
+            "inprogress": { id: "inprogress", title: "In Progress", taskIds: [] as string[] },
+            "done": { id: "done", title: "Done", taskIds: [] as string[] }
+        },
+        tasks: {} as Record<string, any>,
     };
 
-    app.put(
-        "/me",
-        requireAuth,
-        async (req: AuthenticatedRequest, res: Response) => {},
-    );
-});
+    for(const doc of docs){
+        const id = doc._id.toString();
+        state.tasks[id] = toClientTask(doc);
+        state.columns[doc.columnId as "todo" | "inprogress" | "done"].taskIds.push(id);
+    }
+
+    return state;
+}
 
 app.listen(process.env.PORT || 3000, () => {
     console.log(`Server is running on port ${process.env.PORT || 3000}`);
