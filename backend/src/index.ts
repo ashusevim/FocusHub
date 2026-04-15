@@ -7,7 +7,7 @@ import bcrypt from "bcrypt";
 import cors from "cors";
 import { hashPassword } from "./utils/hashService.js";
 import { generateToken, verifyToken } from "./utils/jwtService.js";
-import { task as Task } from "./schema/task.models.js"
+import { task, task as Task } from "./schema/task.models.js"
 
 dotenv.config({
     path: "./.env",
@@ -312,6 +312,182 @@ const buildBoardState = (docs: any[]) => {
 
     return state;
 }
+
+app.get("/board", requireAuth,  async (req: AuthenticatedRequest, res: Response) => {
+    const userId = req.auth?.userId
+
+    if(!userId){
+        return res.status(401).json({
+            message: "Unauthorized"
+        })
+    }
+
+    const docs = await Task.find({ userId }).sort({
+        columnId: 1,
+        order: 1,
+        createdAt: 1
+    })
+
+    return res.status(200).json({
+        statusCode: 200,
+        board: buildBoardState(docs),
+    })
+})
+
+app.post("/tasks", requireAuth, async (req: AuthenticatedRequest, res: Response) => {
+    const userId = req.auth?.userId
+
+    if(!userId){
+        return res.status(401).json({
+            message: "Unauthorized"
+        })
+    }
+
+    const title = req.body?.title === "string" ? req.body.title.trim() : "";
+    const columnId = req.body?.columnId === "string" ? req.body.columnId.trim() : ""
+    const tags = Array.isArray(req.body?.tags) ? req.body.tags.map((task:string)=>String(task).trim()).filter(Boolean) : []
+    const description = req.body?.description === "string" ? req.body?.description.trim() : ""
+
+    if(!title){
+        return res.status(400).json({
+            message: "Title is required"
+        })
+    }
+
+    if(!validColumns.has(columnId)){
+        return res.status(400).json({
+            message: "Invalid columnId"
+        })
+    }
+
+    const last = await Task.findOne({ userId, columnId }).sort({ order: -1}).select("order");
+    const order = typeof last?.order === "number" ? last.order + 1 : 0
+
+    const created = await Task.create({
+        userId,
+        columnId,
+        title,
+        tags, 
+        description, 
+        order
+    })
+
+    return res.status(201).json({
+        statusCode: 201,
+        message: "Task created",
+        task: toClientTask(created),
+        columnId,
+    });
+});
+
+app.patch("/tasks/:id", requireAuth, async (req: AuthenticatedRequest, res: Response) => {
+    const userId = req.auth?.userId
+    if(!userId){
+        return res.status(401).json({
+            message: "Unauthorized"
+        })
+    }
+
+    const updates: Record<string, any> = {};
+
+    if(typeof req.body?.title === "string"){
+        updates.title = req.body?.title.trim();
+    }
+
+    if(typeof req.body?.description === "string"){
+        updates.description = req.body?.description.trim();
+    }
+
+    if(Array.isArray(req.body?.tags)){
+        updates.tags = req.body?.tags.map((task: string) => String(task).trim()).filter(Boolean);
+    }
+
+    const updated = await Task.findOneAndUpdate(
+        { _id: req.params.id, userId },
+        { $set: updates },
+        { new: true, runValidators: true }
+    ) 
+
+    if(!updated){
+        return res.status(404).json({
+            message: "Task not found"
+        })
+    }
+
+    return res.status(200).json({
+        statusCode: 200,
+        message: "Task created",
+        task: toClientTask(updated),
+    })
+})
+
+app.patch("/tasks/:id/move", requireAuth, async (req: AuthenticatedRequest, res: Response) => {
+    const userId = req.auth?.userId
+    if(!userId){
+        return res.status(401).json({
+            message: "unauthorized"
+        })
+    }
+
+    const targetColumnId = typeof req.body?.targetColumnId === "string" ? req.body?.targetColumnId : ""
+    if(!validColumns.has(targetColumnId)){
+        return res.status(400).json({
+            message: "Invalid targetColumnId"
+        })
+    }
+
+    const last = await Task.findOne({
+        userId,
+        columnId: targetColumnId  
+    }).sort({ order: -1 }).select("order")
+
+    const nextOrder = typeof last?.order === "number" ? last.order + 1 : 0
+
+    const moved = await Task.findOneAndUpdate(
+        { _id: req.params.id, userId },
+        { $set: { columnId: targetColumnId, order: nextOrder } },
+        { new: true }
+    )
+
+    if(!moved){
+        return res.status(404).json({
+            message: "Task not found"
+        })
+    }
+
+    return res.status(200).json({
+        statusCode: 200,
+        message: "Task moved",
+        task: toClientTask(moved),
+        columnId: moved.columnId
+    });
+});
+
+app.delete("/task/:id", async (req: AuthenticatedRequest, res: Response) => {
+    const userId = req.auth?.userId
+    if(!userId){
+        return res.status(401).json({
+            message: "Unauthorized"
+        })
+    }
+
+    const deleted = await Task.findOneAndDelete({
+        _id: req.params.id, userId
+    });
+
+    if(!deleted){
+        return res.status(404).json({
+            message: "Task not found"
+        })
+    }
+
+    return res.status(200).json({
+        statusCode: 200,
+        message: "Task deleted",
+        taskId: req.params.id,
+        columnId: deleted.columnId
+    });
+})
 
 app.listen(process.env.PORT || 3000, () => {
     console.log(`Server is running on port ${process.env.PORT || 3000}`);
