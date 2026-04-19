@@ -7,7 +7,7 @@ import bcrypt from "bcrypt";
 import cors from "cors";
 import { hashPassword } from "./utils/hashService.js";
 import { generateToken, verifyToken } from "./utils/jwtService.js";
-import { task, task as Task } from "./schema/task.models.js"
+import { task as Task } from "./schema/task.models.js"
 
 dotenv.config({
     path: "./.env",
@@ -30,6 +30,8 @@ type AuthenticatedRequest = Request & {
         userId: string;
     };
 };
+
+type columnId = "todo" | "inprogress" | "done"
 
 const requireAuth = (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
     try {
@@ -295,19 +297,25 @@ const toClientTask = (doc: any) => ({
 })
 
 const buildBoardState = (docs: any[]) => {
-    const state = {
+    const state:
+    {
+        columns: Record<columnId, { id: columnId; title: string; taskIds: string[]}>; 
+        tasks: Record<string, ReturnType<typeof toClientTask>>;
+    } =  {
         columns: {
             "todo": { id: "todo", title: "To Do", taskIds: [] as string[] },
             "inprogress": { id: "inprogress", title: "In Progress", taskIds: [] as string[] },
-            "done": { id: "done", title: "Done", taskIds: [] as string[] }
+            "done": { id: "done", title: "Done", taskIds: [] as string[] },
         },
-        tasks: {} as Record<string, any>,
+        tasks: {},
     };
 
     for(const doc of docs){
         const id = doc._id.toString();
+        const columnId = doc.columnId as columnId
+
         state.tasks[id] = toClientTask(doc);
-        state.columns[doc.columnId as "todo" | "inprogress" | "done"].taskIds.push(id);
+        state.columns[columnId].taskIds.push(id);
     }
 
     return state;

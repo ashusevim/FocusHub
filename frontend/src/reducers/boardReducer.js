@@ -75,6 +75,7 @@ function boardReducer(state, action) {
             return {
                 ...state,
                 tasks: {
+                    ...state.tasks,
                     [taskId]: updatedTask
                 }
             }

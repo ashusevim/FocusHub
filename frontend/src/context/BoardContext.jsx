@@ -87,7 +87,7 @@ export function BoardProvider({ children }) {
                 type: "UPDATE_TASK",
                 payload: {
                     taskId,
-                    updateTask: data.task
+                    updatedTask: data.task
                 }
             })
         },
