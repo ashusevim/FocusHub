@@ -13,38 +13,33 @@ import {
 import TaskModal from "../modal/TaskModal";
 
 export default function TaskCard({ task, columnId }) {
-    const { dispatch } = useBoard();
+    const { moveTask, deleteTask } = useBoard()
     const [isOpen, setIsOpen] = useState(false);
 
-    const handleMoveTask = () => {
+    const handleMoveTask = async () => {
         let targetColumnId = prompt("Enter a column (todo, inprogress, done):");
-        if (targetColumnId) {
-            dispatch({
-                type: 'MOVE_TASK',
+        
+        if(!targetColumnId){
+            return
+        }
+
+        try {
+            await moveTask({
                 taskId: task.id,
                 sourceColumnId: columnId,
-                targetColumnId: targetColumnId
-            })
+                targetColumnId,
+            });
+        } catch (error) {
+            alert(error.message || "Failed to move task")
         }
-        else {
-            console.log("Invalid target column ID");
+    }
+
+    const handleDeleteTask = async () => {
+        try {
+            await deleteTask({ taskId: task.id })
+        } catch (error) {
+            alert(error.message || "Failed to delete task")
         }
-    }
-
-    const handleDeleteTask = () => {
-        dispatch({
-            type: 'DELETE_TASK',
-            taskId: task.id,
-            columnId: columnId
-        })
-    }
-
-    const handleEdit = () => {
-        setIsOpen(true);
-    }
-
-    const handleModalClose = () => {
-        setIsOpen(false);
     }
 
     return (
@@ -52,45 +47,24 @@ export default function TaskCard({ task, columnId }) {
             <Card size="sm" className="mx-auto w-full max-w-sm">
                 <CardHeader>
                     <CardTitle>{task.title}</CardTitle>
-                    <CardDescription className={"flex gap-1"}>
-                        {task.tags.map((tag, index) => (
-                            <span
-                                key={index} className="border bg-amber-100 px-1 rounded text-xs"
-                            >{tag}</span>
+                    <CardDescription className="flex gap-1 flex-wrap">
+                        {(task.tags || []).map((tag, index) => (
+                            <span key={index} className="border bg-amber-100 px-1 rounded text-xs">
+                                {tag}
+                            </span>
                         ))}
                     </CardDescription>
                 </CardHeader>
                 <CardContent>
-                    <p>
-                        The card component supports a size prop that can be set to
-                        &quot;sm&quot; for a more compact appearance.
-                    </p>
+                    <p>{task.description || "No description"}</p>
                 </CardContent>
-                <CardFooter className={"gap-2"}>
-                    <Button
-                        variant="default"
-                        size="default"
-                        onClick={handleDeleteTask}
-                    >
-                        Delete
-                    </Button>
-                    <Button
-                        variant="default"
-                        size="default"
-                        onClick={handleMoveTask}
-                    >
-                        Move
-                    </Button>
-                    <Button
-                        variant="default"
-                        size="default"
-                        onClick={handleEdit}
-                    >
-                        Edit
-                    </Button>
+                <CardFooter className="gap-2">
+                    <Button onClick={handleDeleteTask}>Delete</Button>
+                    <Button onClick={handleMoveTask}>Move</Button>
+                    <Button onClick={() => setIsOpen(true)}>Edit</Button>
                 </CardFooter>
             </Card>
-            {isOpen && <TaskModal task={task} columnId={columnId} onClose={handleModalClose} />}
+            {isOpen && <TaskModal task={task} columnId={columnId} onClose={() => setIsOpen(false)} />}
         </>
-    )
+    );
 }

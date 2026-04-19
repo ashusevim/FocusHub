@@ -1,36 +1,31 @@
 function boardReducer(state, action) {
     switch (action.type) {
+
+        case "SET_BOARD": {
+            return action.payload
+        }
+
         case 'ADD_TASK': {
+            const { columnId, task } = action.payload
 
-            const newTask = {
-                id: action.id,
-                title: action.title,
-                tags: action.tags || []
-            }
-
-            // 1. Add task to task object
-            // 2. Add task Id to specific column's taskIds array
-            const columnId = action.columnId // know which column!
-
-            // find column, push new tasks, return new state object
             return {
                 ...state,
                 tasks: {
                     ...state.tasks,
-                    [newTask.id]: newTask
+                    [task.id]: task
                 },
                 columns: {
                     ...state.columns,
                     [columnId]: {
                         ...state.columns[columnId],
-                        taskIds: [...state.columns[columnId].taskIds, newTask.id]
-                    }
-                }
+                        taskIds: [...state.columns[columnId].taskIds, task.id]
+                    },
+                },
             };
         }
 
         case 'MOVE_TASK': {
-            const { taskId, sourceColumnId, targetColumnId } = action;
+            const { taskId, sourceColumnId, targetColumnId } = action.payload;
 
             // 1. create new source taskIds (remove task)
             const newSourceTaskIds = state.columns[sourceColumnId].taskIds.filter(id => id !== taskId);
@@ -42,7 +37,6 @@ function boardReducer(state, action) {
                 ...state,
                 columns: {
                     ...state.columns,
-                    //update only two affected columns
                     [sourceColumnId]: {
                         ...state.columns[sourceColumnId],
                         taskIds: newSourceTaskIds
@@ -50,14 +44,13 @@ function boardReducer(state, action) {
                     [targetColumnId]: {
                         ...state.columns[targetColumnId],
                         taskIds: newTargetTaskIds
-                    }
-                }
-            }
+                    },
+                },
+            };
         }
 
-        // Return a new array with given task excluded
         case 'DELETE_TASK': {
-            const { taskId, columnId } = action;
+            const { taskId, columnId } = action.payload;
 
             // remove the task from the task object
             const newTasks = { ...state.tasks };
@@ -70,11 +63,10 @@ function boardReducer(state, action) {
                     ...state.columns,
                     [columnId]: {
                         ...state.columns[columnId],
-                        // filter out the taskId from the column
                         taskIds: state.columns[columnId].taskIds.filter(id => id !== taskId)
-                    }
-                }
-            }
+                    },
+                },
+            };
         }
 
         case 'UPDATE_TASK': {

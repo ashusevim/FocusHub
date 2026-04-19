@@ -6,35 +6,42 @@ import { Plus } from "lucide-react";
 // title: name of the column (e.g., "To Do", "Done")
 // tasks: An array of task objects belongs to this column
 function Columns({ title, tasks, columnId }) {
-    const { dispatch } = useBoard()
+    const { addTask } = useBoard()
+    
+    const handleAddTask = async () => {
+        const titleTitle = prompt("Enter task title: ");
+        if(!titleTitle.trim())return;
 
-    const handleAddTask = () => {
-        const title = prompt("Enter task title: ");
-        if(!title)return;
+        const rawTags = prompt("Enter tags (comma separated):") || ""
+        const tags = rawTags.split(",").map((tags) => tags.trim()).filter(Boolean)
 
-        dispatch({
-            type: "ADD_TASK",
-            columnId: columnId,
-            id: Date.now(), // simple unique id
-            title: title,
-            tags: ["New"]  // default tag
-        })
+        const description = prompt("Enter description:") || ""
+
+        try {
+            await addTask({
+                columnId,
+                title: titleTitle.trim(),
+                tags,
+                description: description.trim()
+            })
+        } catch (error) {
+            alert(error.message || "Failed to add task");
+        }
     }
 
     return (
 		<div className="space-y-2 border-2 rounded-3xl flex flex-col p-10">
             <div>
                 <h2 className="font-bold text-xl">{title}</h2>
-			    <span>Tasks: {tasks.length}</span>
+                <span>Tasks: {tasks.length}</span>
             </div>
-			
-            {/* list of tasks */}
+
             <div className="flex flex-col gap-3">
-			    {tasks.map((task) => (
+                {tasks.map((task) => (
                     <div key={task.id}>
-					    <TaskCard key={task.id} columnId={columnId} task={task}/>
-				    </div>
-			    ))}
+                        <TaskCard columnId={columnId} task={task} />
+                    </div>
+                ))}
             </div>
 
             <Button
@@ -42,10 +49,10 @@ function Columns({ title, tasks, columnId }) {
                 className="w-full justify-start text-gray-500 hover:text-black hover:bg-gray-100"
                 onClick={handleAddTask}
             >
-                <Plus size={16} className="mr-2"/>
+                <Plus size={16} className="mr-2" />
                 Add task
             </Button>
-		</div>
+        </div>
 	);
 }
 

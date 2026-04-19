@@ -313,7 +313,7 @@ const buildBoardState = (docs: any[]) => {
     return state;
 }
 
-app.get("/board", requireAuth,  async (req: AuthenticatedRequest, res: Response) => {
+app.get("/board", requireAuth, async (req: AuthenticatedRequest, res: Response) => {
     const userId = req.auth?.userId
 
     if(!userId){
@@ -343,10 +343,12 @@ app.post("/tasks", requireAuth, async (req: AuthenticatedRequest, res: Response)
         })
     }
 
-    const title = req.body?.title === "string" ? req.body.title.trim() : "";
-    const columnId = req.body?.columnId === "string" ? req.body.columnId.trim() : ""
-    const tags = Array.isArray(req.body?.tags) ? req.body.tags.map((task:string)=>String(task).trim()).filter(Boolean) : []
-    const description = req.body?.description === "string" ? req.body?.description.trim() : ""
+    const title = typeof req.body?.title === "string" ? req.body.title.trim() : "";
+    
+    // the default task should go to the "todo"
+    const columnId = typeof req.body?.columnId === "string" ? req.body.columnId : "todo"
+    const tags = Array.isArray(req.body?.tags) ? req.body.tags.map((task:string) => String(task).trim()).filter(Boolean) : []
+    const description = typeof req.body?.description === "string" ? req.body?.description.trim() : ""
 
     if(!title){
         return res.status(400).json({
@@ -391,15 +393,15 @@ app.patch("/tasks/:id", requireAuth, async (req: AuthenticatedRequest, res: Resp
     const updates: Record<string, any> = {};
 
     if(typeof req.body?.title === "string"){
-        updates.title = req.body?.title.trim();
+        updates.title = req.body.title.trim();
     }
 
     if(typeof req.body?.description === "string"){
-        updates.description = req.body?.description.trim();
+        updates.description = req.body.description.trim();
     }
 
     if(Array.isArray(req.body?.tags)){
-        updates.tags = req.body?.tags.map((task: string) => String(task).trim()).filter(Boolean);
+        updates.tags = req.body.tags.map((task: string) => String(task).trim()).filter(Boolean);
     }
 
     const updated = await Task.findOneAndUpdate(
@@ -418,6 +420,7 @@ app.patch("/tasks/:id", requireAuth, async (req: AuthenticatedRequest, res: Resp
         statusCode: 200,
         message: "Task created",
         task: toClientTask(updated),
+        columnId: updated.columnId
     })
 })
 
