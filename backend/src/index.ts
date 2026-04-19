@@ -474,7 +474,7 @@ app.patch("/tasks/:id/move", requireAuth, async (req: AuthenticatedRequest, res:
     });
 });
 
-app.delete("/task/:id", requireAuth, async (req: AuthenticatedRequest, res: Response) => {
+app.delete("/tasks/:id", requireAuth, async (req: AuthenticatedRequest, res: Response) => {
     const userId = req.auth?.userId
     if(!userId){
         return res.status(401).json({
