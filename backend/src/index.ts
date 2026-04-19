@@ -37,7 +37,7 @@ const requireAuth = (req: AuthenticatedRequest, res: Response, next: NextFunctio
     try {
         const authHeader = req.header("authorization");
 
-        if (!authHeader || !authHeader.startsWith("Bearer: ")) {
+        if (!authHeader || !authHeader.startsWith("Bearer ")) {
             return res.status(401).json({
                 message: "Unauthorized",
             });
@@ -474,7 +474,7 @@ app.patch("/tasks/:id/move", requireAuth, async (req: AuthenticatedRequest, res:
     });
 });
 
-app.delete("/task/:id", async (req: AuthenticatedRequest, res: Response) => {
+app.delete("/task/:id", requireAuth, async (req: AuthenticatedRequest, res: Response) => {
     const userId = req.auth?.userId
     if(!userId){
         return res.status(401).json({
